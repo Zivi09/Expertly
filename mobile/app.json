@@ -15,13 +15,19 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000926"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.ziiiven.expertly"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "f7a5b009-9d63-4ef1-b776-7fd0466446d1"
+      }
+    }
   }
 }
