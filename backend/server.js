@@ -1,4 +1,9 @@
 require('dotenv').config();
+const dns = require('dns');
+// Force IPv4 as priority to prevent ENETUNREACH errors with IPv6 on restricted networks
+if (dns.setDefaultResultOrder) {
+  dns.setDefaultResultOrder('ipv4first');
+}
 const http = require('http');
 const express = require('express');
 const cors = require('cors');
