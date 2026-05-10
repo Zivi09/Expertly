@@ -1,15 +1,19 @@
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  service: (process.env.SMTP_HOST || '').includes('gmail') ? 'gmail' : undefined,
   host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: process.env.SMTP_PORT || 587,
-  secure: process.env.SMTP_PORT == 465,
-  family: 4, // Force IPv4 to avoid ENETUNREACH errors with IPv6
+  port: parseInt(process.env.SMTP_PORT || '465'),
+  secure: process.env.SMTP_SECURE === 'true' || process.env.SMTP_PORT == '465',
+  family: 4, // Force IPv4 to avoid ENETUNREACH errors
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
+  tls: {
+    // Do not fail on invalid certificates (helpful for some cloud environments)
+    rejectUnauthorized: false
+  },
+  connectionTimeout: 10000, // 10 seconds timeout
 });
 
 /**
