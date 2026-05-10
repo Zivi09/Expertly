@@ -42,7 +42,7 @@ const createBooking = async (req, res, next) => {
         date,
         timeSlot,
         notes: notes || '',
-        status: 'pending',
+        status: 'confirmed',
       });
     } catch (createErr) {
       await Expert.updateOne(
