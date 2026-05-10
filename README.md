@@ -21,6 +21,17 @@ A premium, high-performance expert session booking platform designed with a **Li
 
 ---
 
+## 📱 Download
+
+<div align="center">
+  <a href="./expertly.apk">
+    <img src="https://img.shields.io/badge/Download-Android%20APK-000926?style=for-the-badge&logo=android&logoColor=white" alt="Download Android APK" />
+  </a>
+  <p><i>Direct link to the production build for Android devices.</i></p>
+</div>
+
+---
+
 ## 🚀 Tech Stack
 
 ### **Frontend (Mobile)**
