@@ -35,7 +35,7 @@ A premium, high-performance expert session booking platform designed with a **Li
 - **Framework:** Express.js
 - **Database:** MongoDB via Mongoose
 - **Real-time:** Socket.io for live booking notifications
-- **Emailing:** Resend for reliable session confirmations
+- **Emailing:** Nodemailer for session confirmations
 
 ---
 
@@ -58,7 +58,7 @@ Users browse through a curated list of experts. The system filters available slo
 ### **2. Booking Pipeline**
 - **Validation:** Every booking request is validated against the expert's schedule and the user's eligibility.
 - **Transaction:** The session is marked as 'Pending' and locked during the checkout phase.
-- **Confirmation:** Upon success, the status is updated via WebSockets, and a confirmation email is dispatched via Resend.
+- **Confirmation:** Upon success, the status is updated via WebSockets, and a confirmation email is dispatched via Nodemailer.
 
 ### **3. Session Management**
 Both users and experts have a dedicated dashboard to manage upcoming, ongoing, and past sessions, with integrated countdown timers and feedback systems.

@@ -1,6 +1,19 @@
-const { Resend } = require('resend');
+const nodemailer = require('nodemailer');
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST || 'smtp.gmail.com',
+  port: parseInt(process.env.SMTP_PORT || '465'),
+  secure: process.env.SMTP_SECURE === 'true' || process.env.SMTP_PORT == '465',
+  family: 4, // Force IPv4 to avoid ENETUNREACH errors with IPv6
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+  tls: {
+    rejectUnauthorized: false
+  },
+  connectionTimeout: 10000, // 10 seconds timeout
+});
 
 /**
  * Sends a booking confirmation email
@@ -9,19 +22,14 @@ const resend = new Resend(process.env.RESEND_API_KEY);
  */
 const sendConfirmationEmail = async (booking, expert) => {
   try {
-    if (!process.env.RESEND_API_KEY) {
-      console.warn('RESEND_API_KEY not provided. Skipping email.');
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.warn('SMTP credentials not provided. Skipping email.');
       return;
     }
 
-    // Note: If you haven't verified your domain on Resend, 
-    // you can only send from 'onboarding@resend.dev' 
-    // and only to the email you signed up with.
-    const fromAddress = process.env.RESEND_FROM_EMAIL || 'Expertly <onboarding@resend.dev>';
-
-    const { data, error } = await resend.emails.send({
-      from: fromAddress,
-      to: [booking.email],
+    const mailOptions = {
+      from: `"Expertly" <${process.env.SMTP_USER}>`,
+      to: booking.email,
       subject: `Booking Confirmed: Session with ${expert.name}`,
       html: `
         <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 40px; border: 1px solid #eee; border-radius: 16px; color: #1a1a1a;">
@@ -73,17 +81,13 @@ const sendConfirmationEmail = async (booking, expert) => {
           </div>
         </div>
       `,
-    });
+    };
 
-    if (error) {
-      console.error('Resend Error:', error);
-      return;
-    }
-
-    console.log('Email sent successfully via Resend:', data.id);
-    return data;
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully via Nodemailer: %s', info.messageId);
+    return info;
   } catch (error) {
-    console.error('Error sending email with Resend:', error);
+    console.error('Error sending email with Nodemailer:', error);
   }
 };
 
