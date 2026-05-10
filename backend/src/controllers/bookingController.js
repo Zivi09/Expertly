@@ -140,8 +140,45 @@ const updateBookingStatus = async (req, res, next) => {
   }
 };
 
+const cancelBooking = async (req, res, next) => {
+  try {
+    const booking = await Booking.findById(req.params.id);
+    if (!booking) {
+      return res.status(404).json({ error: 'Booking not found.' });
+    }
+
+    // 1. Unbook the slot in the Expert model
+    await Expert.updateOne(
+      { _id: booking.expertId },
+      { $set: { 'availableSlots.$[slot].isBooked': false } },
+      { arrayFilters: [{ 'slot.date': booking.date, 'slot.time': booking.timeSlot }] }
+    );
+
+    // 2. Delete the booking
+    await Booking.findByIdAndDelete(req.params.id);
+
+    // 3. Emit real-time update via Socket.io
+    const io = req.app.get('io');
+    if (io) {
+      io.emit('slot_unbooked', { 
+        expertId: booking.expertId, 
+        date: booking.date, 
+        timeSlot: booking.timeSlot 
+      });
+    }
+
+    res.json({ message: 'Booking cancelled successfully.' });
+  } catch (err) {
+    if (err.name === 'CastError') {
+      return res.status(400).json({ error: 'Invalid booking id.' });
+    }
+    next(err);
+  }
+};
+
 module.exports = {
   createBooking,
   getBookingsByEmail,
   updateBookingStatus,
+  cancelBooking,
 };

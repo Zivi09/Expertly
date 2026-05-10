@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -30,7 +31,23 @@ export function MyBookingsScreen() {
     searched,
     search,
     retry,
+    cancel,
   } = useBookings();
+
+  const handleCancel = useCallback((bookingId) => {
+    Alert.alert(
+      'Cancel Booking',
+      'Are you sure you want to cancel this session? This action cannot be undone.',
+      [
+        { text: 'Keep Booking', style: 'cancel' },
+        { 
+          text: 'Cancel Session', 
+          style: 'destructive',
+          onPress: () => cancel(bookingId) 
+        },
+      ]
+    );
+  }, [cancel]);
 
   const headerBlock = (
     <>
@@ -55,6 +72,7 @@ export function MyBookingsScreen() {
           onChangeText={setEmailInput}
           keyboardType="email-address"
           autoCapitalize="none"
+          onSubmitEditing={() => search(emailInput)}
         />
         <TouchableOpacity
           style={[styles.searchBtn, { backgroundColor: colors.primary }]}
@@ -127,6 +145,15 @@ export function MyBookingsScreen() {
                   {item.notes}
                 </Text>
               ) : null}
+              
+              <TouchableOpacity 
+                style={styles.cancelBtn}
+                onPress={() => handleCancel(item._id)}
+              >
+                <Text style={[typo.caption, { color: colors.error, fontFamily: fonts.bold }]}>
+                  Cancel Booking
+                </Text>
+              </TouchableOpacity>
             </View>
           )}
         />
@@ -184,4 +211,11 @@ const styles = StyleSheet.create({
   expertName: { fontSize: 17 },
   slot: { marginTop: spacing.xs },
   notes: { marginTop: spacing.sm },
+  cancelBtn: {
+    marginTop: spacing.md,
+    paddingTop: spacing.sm,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(0,0,0,0.05)',
+    alignItems: 'flex-end',
+  },
 });

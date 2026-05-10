@@ -4,6 +4,7 @@ const {
   createBooking,
   getBookingsByEmail,
   updateBookingStatus,
+  cancelBooking,
 } = require('../controllers/bookingController');
 
 const router = express.Router();
@@ -24,5 +25,6 @@ const bookingValidators = [
 router.get('/', getBookingsByEmail);
 router.post('/', bookingValidators, createBooking);
 router.patch('/:id/status', updateBookingStatus);
+router.delete('/:id', cancelBooking);
 
 module.exports = router;

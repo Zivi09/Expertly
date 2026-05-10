@@ -15,4 +15,5 @@ export const expertsApi = {
 export const bookingsApi = {
   create: (body) => api.post('/bookings', body),
   byEmail: (email) => api.get('/bookings', { params: { email } }),
+  cancel: (id) => api.delete(`/bookings/${id}`),
 };
