@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated, Easing, Text } from 'react-native';
 import { palette, fonts } from '../constants/theme';
 import { LinearGradient } from 'expo-linear-gradient';
+import { AnimatedLogoText } from './AnimatedLogoText';
 
 export const LoadingScreen = ({ message = 'Loading...' }) => {
   const rotation = useRef(new Animated.Value(0)).current;
@@ -56,7 +57,7 @@ export const LoadingScreen = ({ message = 'Loading...' }) => {
         </Animated.View>
         
         <Animated.View style={[styles.innerCircle, { transform: [{ scale: pulse }] }]}>
-          <View style={styles.glassCircle} />
+          <AnimatedLogoText size={18} />
         </Animated.View>
 
         <Text style={styles.text}>{message}</Text>

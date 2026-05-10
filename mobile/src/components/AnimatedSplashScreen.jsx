@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated, Dimensions, Image } from 'react-native';
+import { View, StyleSheet, Animated, Dimensions } from 'react-native';
 import { palette } from '../constants/theme';
 import { LinearGradient } from 'expo-linear-gradient';
+import { AnimatedLogoText } from './AnimatedLogoText';
 
 const { width, height } = Dimensions.get('window');
 
@@ -75,12 +76,7 @@ export const AnimatedSplashScreen = ({ onFinish }) => {
           ] 
         }
       ]}>
-        <Image 
-          source={require('../../assets/icon.png')} 
-          style={styles.logo}
-          resizeMode="contain"
-        />
-        <View style={styles.logoShadow} />
+        <AnimatedLogoText size={56} />
       </Animated.View>
 
       <View style={styles.footer}>
