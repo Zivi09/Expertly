@@ -34,6 +34,10 @@ export function useBookings() {
     }
   }, []);
 
+  const retry = useCallback(() => {
+    if (lastQuery) search(lastQuery);
+  }, [lastQuery, search]);
+
   const cancel = useCallback(async (bookingId) => {
     setLoading(true);
     setError(null);
