@@ -7,6 +7,7 @@ const transporter = nodemailer.createTransport({
   host: cleanEnv(process.env.SMTP_HOST) || 'smtp.gmail.com',
   port: parseInt(cleanEnv(process.env.SMTP_PORT) || '465'),
   secure: cleanEnv(process.env.SMTP_SECURE) === 'true' || cleanEnv(process.env.SMTP_PORT) == '465',
+  requireTLS: true, // Added for enhanced security
   family: 4, 
   auth: {
     user: cleanEnv(process.env.SMTP_USER),
