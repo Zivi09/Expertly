@@ -15,9 +15,9 @@ const CAROUSEL_WIDTH = width - spacing.md * 2;
 const ITEM_HEIGHT = CAROUSEL_WIDTH / 1.6;
 
 const IMAGES = [
-  require('../../assets/images/carousel_1.png'),
-  require('../../assets/images/carousel_2.png'),
-  require('../../assets/images/carousel_3.png'),
+  'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200&h=800&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1200&h=800&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1454165833767-02a9e406f06d?q=80&w=1200&h=800&auto=format&fit=crop',
 ];
 
 export const Carousel = () => {
@@ -84,7 +84,7 @@ export const Carousel = () => {
         keyExtractor={(_, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            <Image source={item} style={styles.image} />
+            <Image source={{ uri: item }} style={styles.image} />
           </View>
         )}
       />
