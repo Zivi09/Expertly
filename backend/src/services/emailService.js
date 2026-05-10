@@ -1,18 +1,21 @@
 const nodemailer = require('nodemailer');
 
+// Helper to strip quotes if they exist in the env file
+const cleanEnv = (val) => (val ? String(val).replace(/['"]+/g, '') : val);
+
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.SMTP_PORT || '465'),
-  secure: process.env.SMTP_SECURE === 'true' || process.env.SMTP_PORT == '465',
-  family: 4, // Force IPv4 to avoid ENETUNREACH errors with IPv6
+  host: cleanEnv(process.env.SMTP_HOST) || 'smtp.gmail.com',
+  port: parseInt(cleanEnv(process.env.SMTP_PORT) || '465'),
+  secure: cleanEnv(process.env.SMTP_SECURE) === 'true' || cleanEnv(process.env.SMTP_PORT) == '465',
+  family: 4, 
   auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
+    user: cleanEnv(process.env.SMTP_USER),
+    pass: cleanEnv(process.env.SMTP_PASS),
   },
   tls: {
     rejectUnauthorized: false
   },
-  connectionTimeout: 10000, // 10 seconds timeout
+  connectionTimeout: 10000,
 });
 
 /**
