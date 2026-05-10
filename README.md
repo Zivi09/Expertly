@@ -1,4 +1,4 @@
-# 🗓️ Session Booking System
+# 🗓️ Expertly
 
 A premium, high-performance expert session booking platform designed with a **Liquid-Glass** aesthetic. This system provides a seamless bridge between experts and clients, featuring real-time availability, secure bookings, and a state-of-the-art mobile interface.
 
